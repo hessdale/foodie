@@ -346,11 +346,69 @@ def delete_menu():
         print("coding error")
     except ValueError:
         print("value error, try again")
+
 ######## client order endpoints ############
 @app.get('/api/client-order')
+def get_client_order():
+    try:
+        header_check = dbhelper.check_endpoint_info(request.headers,["token"])
+        if(header_check != None):
+            return make_response(jsonify(header_check),400)
+        results = dbhelper.run_procedure("call get_client_order(?)",request.headers.get("token"))
+        if(type(results) == list):
+            return make_response(jsonify(results),200)
+        else:
+            return make_response("something went wrong",400)
+    # some except blocks with possible errors
+    except TypeError:
+        print("invalid input type, try again.")
+    except UnboundLocalError:
+        print("coding error")
+    except ValueError:
+        print("value error, try again")
+
 @app.post('/api/client-order')
+def new_client_order():
+    try:
+        header_check = dbhelper.check_endpoint_info(request.headers,["token"])
+        if(header_check != None):
+            return make_response(jsonify(header_check),400)
+        error = dbhelper.check_endpoint_info(request.json,["menu_items","restaurant_id"])
+        if(error != None):
+            return make_response(jsonify(header_check),400)
+        results = dbhelper.run_procedure("call new_client_order(?,?,?)",request.headers.get("token"),request.json.get("menu_items"),request.json.get("restaurant_id"))
+        if(type(results) == list):
+            return make_response(jsonify(results),200)
+        else:
+            return make_response("something went wrong",400)
+    # some except blocks with possible errors
+    except TypeError:
+        print("invalid input type, try again.")
+    except UnboundLocalError:
+        print("coding error")
+    except ValueError:
+        print("value error, try again")
+
 ######## restaurant order endpoints ########
 @app.get('/api/restaurant-order')
+def get_restaurant_order():
+    try:
+        header_check = dbhelper.check_endpoint_info(request.headers,["token"])
+        if(header_check != None):
+            return make_response(jsonify(header_check),400)
+        results = dbhelper.run_procedure("call get_restaurant_order(?)",request.headers.get("token"))
+        if(type(results) == list):
+            return make_response(jsonify(results),200)
+        else:
+            return make_response("something went wrong",400)
+    # some except blocks with possible errors
+    except TypeError:
+        print("invalid input type, try again.")
+    except UnboundLocalError:
+        print("coding error")
+    except ValueError:
+        print("value error, try again")
+
 @app.patch('/api/restaurant-order')
 
 
