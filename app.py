@@ -89,13 +89,11 @@ def delete_client():
 @app.post('/api/client-login')
 def client_login():
     try:
-        header_check = dbhelper.check_endpoint_info(request.headers,["token"])
-        if(header_check != None):
-            return make_response(jsonify(header_check),400)
-        error=dbhelper.check_endpoint_info(request.json,["password"])
+        error=dbhelper.check_endpoint_info(request.json,["password","username"])
         if(error != None):
             return make_response(jsonify(error),400)
-        results=dbhelper.run_procedure("call delete_client(?,?)",request.headers.get("token"),request.json.get("password"))
+        token = uuid.UUID.hex()
+        results=dbhelper.run_procedure("call client_login(?,?)",[token,request.json.get("username"),request.json.get("password")])
         if(results ==  None):
             return make_response("delete successful",200)
         else:
@@ -230,6 +228,7 @@ def restaurant_login():
         print("coding error")
     except ValueError:
         print("value error, try again")
+
 @app.delete('/api/restuarant-login')
 def delete_restaurant_login():
     try:
@@ -274,7 +273,7 @@ def get_menu():
         error = dbhelper.check_endpoint_info(request.json,["restaurant_id"])
         if(error != None):
             return make_response(jsonify(error),400)
-        results =  dbhelper.run_procedure("call get_menu")
+        results =  dbhelper.run_procedure("call get_menu(?)",[request.json.get("restaurant_id")])
         if(type(results) == list):
             return make_response(jsonify(results),200)
         else:
@@ -288,7 +287,7 @@ def get_menu():
         print("value error, try again")
 
 @app.post('/api/menu')
-def newmenu():
+def new_menu():
     try:
         header_check = dbhelper.check_endpoint_info(request.headers,["token"])
         if(header_check != None):
@@ -296,7 +295,7 @@ def newmenu():
         error = dbhelper.check_endpoint_info(request.json,["description","image_url","name","price"])
         if(error != None):
             return make_response(jsonify(error),400)
-        results = dbhelper.run_procedure
+        results = dbhelper.run_procedure("call new_menu",[request.json.get("description"),request.json.get("image_url"),request.json.get("name"),request.json.get("price"),])
         if(type(results) == list):
             return make_response(jsonify(results),200)
         else:
@@ -314,8 +313,8 @@ def menu_edit():
         header_check = dbhelper.check_endpoint_info(request.headers,["token"])
         if(header_check != None):
             return make_response(jsonify(header_check),400)
-        results = dbhelper.run_procedure("call menu_edit(?,?,?,?,?)",request.headers.get("token"),request.json.get("description"),request.json.get("image_url")
-                                         ,request.json.get("name"),request.json.get("price"))
+        results = dbhelper.run_procedure("call menu_edit(?,?,?,?,?)",[request.headers.get("token"),request.json.get("description"),request.json.get("image_url")
+                                         ,request.json.get("name"),request.json.get("price")])
         if(results == None):
             return make_response("edit successful",200)
         else:
@@ -334,7 +333,7 @@ def delete_menu():
         header_check = dbhelper.check_endpoint_info(request.headers,["token"])
         if(header_check != None):
             return make_response(jsonify(header_check),400)
-        results = dbhelper.run_procedure("call delete_menu(?,?)",request.headers.get("token"),request.json.get("menu_id"))
+        results = dbhelper.run_procedure("call delete_menu(?,?)",[request.headers.get("token"),request.json.get("menu_id")])
         if(results == None):
             return make_response("edit successful",200)
         else:
@@ -354,7 +353,7 @@ def get_client_order():
         header_check = dbhelper.check_endpoint_info(request.headers,["token"])
         if(header_check != None):
             return make_response(jsonify(header_check),400)
-        results = dbhelper.run_procedure("call get_client_order(?)",request.headers.get("token"))
+        results = dbhelper.run_procedure("call get_client_order(?)",[request.headers.get("token")])
         if(type(results) == list):
             return make_response(jsonify(results),200)
         else:
@@ -376,7 +375,7 @@ def new_client_order():
         error = dbhelper.check_endpoint_info(request.json,["menu_items","restaurant_id"])
         if(error != None):
             return make_response(jsonify(header_check),400)
-        results = dbhelper.run_procedure("call new_client_order(?,?,?)",request.headers.get("token"),request.json.get("menu_items"),request.json.get("restaurant_id"))
+        results = dbhelper.run_procedure("call new_client_order(?,?,?)",[request.headers.get("token"),request.json.get("menu_items"),request.json.get("restaurant_id")])
         if(type(results) == list):
             return make_response(jsonify(results),200)
         else:
@@ -396,7 +395,7 @@ def get_restaurant_order():
         header_check = dbhelper.check_endpoint_info(request.headers,["token"])
         if(header_check != None):
             return make_response(jsonify(header_check),400)
-        results = dbhelper.run_procedure("call get_restaurant_order(?)",request.headers.get("token"))
+        results = dbhelper.run_procedure("call get_restaurant_order(?)",[request.headers.get("token")])
         if(type(results) == list):
             return make_response(jsonify(results),200)
         else:
@@ -409,7 +408,28 @@ def get_restaurant_order():
     except ValueError:
         print("value error, try again")
 
+######################################################################## THIS HAS NO INPUT FOR CONFIRMED/COMPLETE #########################################################
+###########################################################################################################################################################################
+
 @app.patch('/api/restaurant-order')
+def patch_restaurant_order():
+    try:
+        header_check = dbhelper.check_endpoint_info(request.headers,["token"])
+        if(header_check != None):
+            return make_response(jsonify(header_check),400)
+        results = dbhelper.run_procedure("call patch_restaurant_order(?)",[request.headers.get("token")])
+        if(type(results) == list):
+            return make_response(jsonify(results),200)
+        else:
+            return make_response("something went wrong",400)
+    # some except blocks with possible errors
+    except TypeError:
+        print("invalid input type, try again.")
+    except UnboundLocalError:
+        print("coding error")
+    except ValueError:
+        print("value error, try again")
+
 
 
 
