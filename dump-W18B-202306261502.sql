@@ -290,7 +290,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `client_login`(token_input varchar(1
 begin
 	INSERT INTO foodie.client_session (client_id, token) 
 	VALUES((select id from client where username=username_input and password=password_input), token_input);
-	select cs.client_id,cs.token from client_session cs where cs.token = token_input;
+	select cs.client_id,convert(cs.token using "utf8")as token from client_session cs where cs.token = token_input;
 	commit;
 end ;;
 DELIMITER ;
@@ -308,10 +308,10 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_client`(token_input varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_client`(token_input varchar(100),password_input varchar(100))
     MODIFIES SQL DATA
 begin
-	DELETE FROM foodie.client WHERE id=(select client_id from client_session where token=token_input);
+	DELETE FROM foodie.client WHERE password=password_input;
 	call delete_client_login(token_input);
 	commit;
 END ;;
@@ -351,10 +351,11 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_menu`(menu_id_input int(10))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_menu`(token_input varchar(100),menu_id_input int(10))
     MODIFIES SQL DATA
 begin
-	DELETE FROM foodie.menu_item WHERE id=menu_id_input;
+	
+	DELETE FROM foodie.menu_item where id=menu_id_input and restaurant_id=(select restaurant_id from restaurant_session where token = token_input);
 	commit;
 END ;;
 DELIMITER ;
@@ -435,12 +436,36 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client`(token_input varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client`(client_id_input int(10))
 begin
 	SELECT convert(created_at using "utf8")as created_at,convert(email using "utf8")as email,convert(first_name using "utf8")as first_name,
 	convert(last_name using "utf8")as last_name,convert(image_url using "utf8")as image_url,convert(username using "utf8")as username
-	FROM foodie.client where id =(select client_id from client_session where token=token_input);
+	FROM foodie.client where id =client_id_input;
 END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_client_order` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client_order`(token_input varchar(100),is_complete_input bool,is_confirmed_input bool)
+begin
+
+	select convert(o.is_complete using "utf8")as is_complete,convert(o.is_confirmed using "utf8")as is_confirmed,
+	convert(mi.name using "utf8")as name,convert(mi.price using "utf8")as price,
+	convert(omi.menu_item_id using "utf8")as menu_item,convert(omi.order_id using "utf8")as order_id
+	from foodie.order_menu_item omi inner join foodie.`order`o on id=order_id 
+	inner join menu_item mi on mi.id=omi.menu_item_id where o.client_id=(select client_id from client_session where token=token_input);
+end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -491,6 +516,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_restaurant_order` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_restaurant_order`(token_input varchar(100),is_complete_input bool,is_confirmed bool)
+begin
+		select o.is_complete,o.is_confirmed,mi.name,mi.price,omi.menu_item_id,omi.order_id
+		from order_menu_item omi inner join menu_item mi on mi.id=omi.menu_item_id
+		inner join `order` o on restauarant_id=(select restaurant_id from restaurant_session where token=token_input);
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `menu_edit` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -534,6 +580,29 @@ begin
 	select cs.client_id,cs.token from client_session cs where id=last_insert_id(); 
 	commit;
 END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `new_client_order` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `new_client_order`(token_input varchar(100),menu_item_input int(10),restaurant_id int(10))
+    MODIFIES SQL DATA
+begin
+	INSERT INTO foodie.`order` (client_id, restaurant_id, is_complete, is_confirmed) 
+	VALUES((select client_id from client_session where token=token_input), menu_item_input,0,0);
+	INSERT INTO foodie.order_menu_item (order_id, menu_item_id) VALUES((select id from `order` where id = last_insert_id()),menu_item_input);
+	commit;
+end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -644,4 +713,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-22 20:42:53
+-- Dump completed on 2023-06-26 15:02:31
