@@ -30,7 +30,7 @@ def new_client():
         error=dbhelper.check_endpoint_info(request.json,["email","first_name","last_name","image_url","username","password"])
         if(error != None):
             return make_response(jsonify(error),400)
-        token=uuid.UUID.hex()
+        token=uuid.uuid4().hex
         results=dbhelper.run_procedure("call new_client(?,?,?,?,?,?,?)",
                                        [request.json.get("email"),request.json.get("first_name"),request.json.get("last_name"),
                                         request.json.get("image_url"),request.json.get("username"),request.json.get("password"),token])
@@ -52,7 +52,7 @@ def client_edit():
         # dont check sent data becuase user can send whatever they want to edit
         if(header_check != None):
             return make_response(jsonify(header_check),400)
-        results=dbhelper.run_procedure("call client_edit(?)",[request.headers.get("token"),request.json.get("email"),request.json.get("first_name")
+        results=dbhelper.run_procedure("call client_edit(?,?,?,?,?,?,?)",[request.headers.get("token"),request.json.get("email"),request.json.get("first_name")
                                                               ,request.json.get("last_name"),request.json.get("image_url"),request.json.get("username"),request.json.get("password")])
         if(results ==  None):
             return make_response("edit successful",200)
@@ -68,13 +68,15 @@ def client_edit():
 @app.delete('/api/client')
 def delete_client():
     try:
-        error = dbhelper.check_endpoint_info(request.json,["username","password"])
+        header_check=dbhelper.check_endpoint_info(request.headers,["token"])
+        if(header_check != None):
+            return make_response(jsonify(header_check),400)
+        error = dbhelper.check_endpoint_info(request.json,["password"])
         if(error != None):
             return make_response(jsonify(error),400)
-        token=uuid.UUID.hex()
-        results=dbhelper.run_procedure("call client_login(?,?)",[request.headers.get("username"),request.json.get("password"),token])
-        if(type(results) ==  list):
-            return make_response("login successful",200)
+        results=dbhelper.run_procedure("call delete_client(?,?)",[request.headers.get("token"),request.json.get("password")])
+        if(results ==  None):
+            return make_response("delete successful",200)
         else:
             return make_response("sorry something went wrong",500)
     # some except blocks with possible errors
@@ -89,13 +91,13 @@ def delete_client():
 @app.post('/api/client-login')
 def client_login():
     try:
-        error=dbhelper.check_endpoint_info(request.json,["password","username"])
+        error=dbhelper.check_endpoint_info(request.json,["email","password"])
         if(error != None):
             return make_response(jsonify(error),400)
-        token = uuid.UUID.hex()
-        results=dbhelper.run_procedure("call client_login(?,?)",[token,request.json.get("username"),request.json.get("password")])
-        if(results ==  None):
-            return make_response("delete successful",200)
+        token = uuid.uuid4().hex
+        results=dbhelper.run_procedure("call client_login(?,?,?)",[token,request.json.get("email"),request.json.get("password")])
+        if(type(results) ==  list):
+            return make_response(jsonify(results),200)
         else:
             return make_response("sorry something went wrong",500)
     # some except blocks with possible errors
@@ -105,6 +107,7 @@ def client_login():
         print("coding error")
     except ValueError:
         print("value error, try again") 
+
 @app.delete('/api/client-login')
 def delete_client_login():
     try:
@@ -128,10 +131,10 @@ def delete_client_login():
 @app.get('/api/restaurant')
 def get_restaurant():
     try:
-        header_check = dbhelper.check_endpoint_info(request.headers,["token"])
-        if(header_check != None):
-            return make_response(jsonify(header_check),400)
-        results=dbhelper.run_procedure("call get_restaurant(?)",[request.headers.get("token")])
+        error=dbhelper.check_endpoint_info(request.json,["restaurant_id"])
+        if(error != None):
+            return make_response(jsonify(error),400)
+        results=dbhelper.run_procedure("call get_restaurant(?)",[request.json.get("restaurant_id")])
         if(type(results) == list):
             return make_response(jsonify(results),200)
         else:
@@ -150,7 +153,7 @@ def new_restaurant():
         error=dbhelper.check_endpoint_info(request.json,["email","name","address","phone_number","bio","city","profile_url","banner_url","password"])
         if(error != None):
             return make_response(jsonify(error),400)
-        token=uuid.UUID.hex()
+        token=uuid.uuid4().hex
         results=dbhelper.run_procedure("call new_restaurant(?,?,?,?,?,?,?,?,?,?)",
                                        [request.json.get("email"),request.json.get("name"),request.json.get("address"),
                                         request.json.get("phone_number"),request.json.get("bio"),request.json.get("city"),
@@ -174,10 +177,9 @@ def restaurant_edit():
         if(header_check != None):
             return make_response(jsonify(header_check),400)
         results=dbhelper.run_procedure("call restaurant_edit(?,?,?,?,?,?,?,?,?,?)",
-                                       [request.json.get("email"),request.json.get("name"),request.json.get("address"),
+                                       [request.headers.get("token"),request.json.get("email"),request.json.get("name"),request.json.get("address"),
                                         request.json.get("phone_number"),request.json.get("bio"),request.json.get("city"),
-                                        request.json.get("profile_url"),request.json.get("banner_url"),request.json.get("password"),
-                                        request.headers.get("token")])
+                                        request.json.get("profile_url"),request.json.get("banner_url"),request.json.get("password")])
         if(results == None):
             return make_response("edit successful",200)
         else:
@@ -196,7 +198,10 @@ def delete_restaurant():
         header_check = dbhelper.check_endpoint_info(request.headers,["token"])
         if(header_check != None):
             return make_response(jsonify(header_check),400)
-        results=dbhelper.run_procedure("call delete_restaurant(?)"[request.headers.get("token")])
+        error = dbhelper.check_endpoint_info(request.json,["password"])
+        if(error != None):
+            return make_response(jsonify(error),400)
+        results=dbhelper.run_procedure("call delete_restaurant(?,?)",[request.headers.get("token"),request.json.get("password")])
         if(results == None):
             return make_response("delete successful",200)
         else:
@@ -210,13 +215,14 @@ def delete_restaurant():
         print("value error, try again") 
 
 ######## restaurant login endpoints ########
-@app.post('/api/restuarant-login')
+@app.post('/api/restaurant-login')
 def restaurant_login():
     try:
         error = dbhelper.check_endpoint_info(request.json,["email","password"])
         if(error != None):
             return make_response(jsonify(error),400)
-        results = dbhelper.run_procedure("call restaurant_login(?,?)",[request.json.get("email"),request.json.get("password")])
+        token=uuid.uuid4().hex
+        results = dbhelper.run_procedure("call restaurant_login(?,?,?)",[token,request.json.get("email"),request.json.get("password")])
         if(type(results) == list):
             return make_response(jsonify(results),200)
         else:
@@ -229,7 +235,7 @@ def restaurant_login():
     except ValueError:
         print("value error, try again")
 
-@app.delete('/api/restuarant-login')
+@app.delete('/api/restaurant-login')
 def delete_restaurant_login():
     try:
         header_check = dbhelper.check_endpoint_info(request.headers,["token"])
@@ -295,7 +301,7 @@ def new_menu():
         error = dbhelper.check_endpoint_info(request.json,["description","image_url","name","price"])
         if(error != None):
             return make_response(jsonify(error),400)
-        results = dbhelper.run_procedure("call new_menu",[request.json.get("description"),request.json.get("image_url"),request.json.get("name"),request.json.get("price"),])
+        results = dbhelper.run_procedure("call new_menu(?,?,?,?,?)",[request.headers.get("token"),request.json.get("description"),request.json.get("image_url"),request.json.get("name"),request.json.get("price"),])
         if(type(results) == list):
             return make_response(jsonify(results),200)
         else:
@@ -313,7 +319,10 @@ def menu_edit():
         header_check = dbhelper.check_endpoint_info(request.headers,["token"])
         if(header_check != None):
             return make_response(jsonify(header_check),400)
-        results = dbhelper.run_procedure("call menu_edit(?,?,?,?,?)",[request.headers.get("token"),request.json.get("description"),request.json.get("image_url")
+        error = dbhelper.check_endpoint_info(request.json,["menu_id"])
+        if(error != None):
+            return make_response(jsonify(error),400)
+        results = dbhelper.run_procedure("call menu_edit(?,?,?,?,?,?)",[request.headers.get("token"),request.json.get("menu_id"),request.json.get("description"),request.json.get("image_url")
                                          ,request.json.get("name"),request.json.get("price")])
         if(results == None):
             return make_response("edit successful",200)
@@ -335,7 +344,7 @@ def delete_menu():
             return make_response(jsonify(header_check),400)
         results = dbhelper.run_procedure("call delete_menu(?,?)",[request.headers.get("token"),request.json.get("menu_id")])
         if(results == None):
-            return make_response("edit successful",200)
+            return make_response("delete successful",200)
         else:
             return make_response("something went wrong",400)
     # some except blocks with possible errors
