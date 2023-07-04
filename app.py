@@ -9,11 +9,11 @@ app = Flask(__name__)
 def get_client():
     try:
         # using dbhelper.check_endpoint_info to check for required data
-        error=dbhelper.check_endpoint_info(request.json,["client_id"])
+        error=dbhelper.check_endpoint_info(request.args,["client_id"])
         if(error != None):
             return make_response(jsonify(error),400)
         # setting results variable as dbhelper.run_procedure calling procedure with data
-        results=dbhelper.run_procedure("call get_client(?)",[request.json.get("client_id")])
+        results=dbhelper.run_procedure("call get_client(?)",[request.args.get("client_id")])
         # if results return from db as list jsonify results with and return 200
         if(type(results) == list):
             return make_response(jsonify(results),200)
@@ -62,8 +62,8 @@ def client_edit():
         if(header_check != None):
             return make_response(jsonify(header_check),400)
         # setting results variable as dbhelper.run_procedure calling procedure with data
-        results=dbhelper.run_procedure("call client_edit(?,?,?,?,?,?,?)",[request.headers.get("token"),request.json.get("email"),request.json.get("first_name")
-                                                              ,request.json.get("last_name"),request.json.get("image_url"),request.json.get("username"),request.json.get("password")])
+        results=dbhelper.run_procedure("call client_edit(?,?,?,?,?,?,?)",[request.headers.get("token"),request.json.get("email"),request.json.get("first_name"),
+                                                              request.json.get("last_name"),request.json.get("image_url"),request.json.get("username"),request.json.get("password")])
         if(results ==  None):
             return make_response("edit successful",200)
         else:
@@ -152,11 +152,11 @@ def delete_client_login():
 def get_restaurant():
     try:
         # using dbhelper.check_endpoint_info to check for required data
-        error=dbhelper.check_endpoint_info(request.json,["restaurant_id"])
+        error=dbhelper.check_endpoint_info(request.args,["restaurant_id"])
         if(error != None):
             return make_response(jsonify(error),400)
         # setting results variable as dbhelper.run_procedure calling procedure with data
-        results=dbhelper.run_procedure("call get_restaurant(?)",[request.json.get("restaurant_id")])
+        results=dbhelper.run_procedure("call get_restaurant(?)",[request.args.get("restaurant_id")])
         # if results return from db as list jsonify results with and return 200
         if(type(results) == list):
             return make_response(jsonify(results),200)
@@ -317,11 +317,11 @@ def get_all_restaurants():
 def get_menu():
     try:
         # using dbhelper.check_endpoint_info to check for required data
-        error = dbhelper.check_endpoint_info(request.json,["restaurant_id"])
+        error = dbhelper.check_endpoint_info(request.args,["restaurant_id"])
         if(error != None):
             return make_response(jsonify(error),400)
         # setting results variable as dbhelper.run_procedure calling procedure with data
-        results =  dbhelper.run_procedure("call get_menu(?)",[request.json.get("restaurant_id")])
+        results =  dbhelper.run_procedure("call get_menu(?)",[request.args.get("restaurant_id")])
         # if results return from db as list jsonify results with and return 200
         if(type(results) == list):
             return make_response(jsonify(results),200)
@@ -417,7 +417,7 @@ def get_client_order():
         if(header_check != None):
             return make_response(jsonify(header_check),400)
         # setting results variable as dbhelper.run_procedure calling procedure with data
-        results = dbhelper.run_procedure("call get_client_order(?,?,?)",[request.headers.get("token"),request.json.get("is_confirmed"),request.json.get("is_complete")])
+        results = dbhelper.run_procedure("call get_client_order(?,?,?)",[request.headers.get("token"),request.args.get("is_confirmed"),request.args.get("is_complete")])
         # if results return from db as list jsonify results with and return 200
         if(type(results) == list):
             return make_response(jsonify(results),200)
