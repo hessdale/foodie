@@ -34,7 +34,7 @@ CREATE TABLE `client` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_un` (`email`),
   UNIQUE KEY `username_un` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (15,'2023-07-01','dale@gmail.com','dale','ten','https://images.pexels.com/photos/17301586/pexels-photo-17301586/free-photo-of-run.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','dale','password'),(16,'2023-07-01','same@gmail.com','sam','lam','https://images.pexels.com/photos/13357691/pexels-photo-13357691.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','sam','password'),(17,'2023-07-01','edward@gmail.com','Ed','ned','https://images.pexels.com/photos/14462604/pexels-photo-14462604.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','Ed','password'),(18,'2023-07-01','Jason@gmail.com','Jason','Mayson','https://images.pexels.com/photos/16494856/pexels-photo-16494856/free-photo-of-sunbeams-and-shadows-around-trees-in-forest.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load','Jayson','password'),(19,'2023-07-01','Alfred@gmail.com','Alfred','Dalfred','https://images.pexels.com/photos/15857351/pexels-photo-15857351/free-photo-of-snow-bird-art-dark.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','Al','password'),(20,'2023-07-01','Emily@gmail.com','Emily','Fanily','https://images.pexels.com/photos/11157048/pexels-photo-11157048.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','Em','password');
+INSERT INTO `client` VALUES (15,'2023-07-01','edit@gmail.com','dale','ten','https://images.pexels.com/photos/17301586/pexels-photo-17301586/free-photo-of-run.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','dale','password'),(16,'2023-07-01','same@gmail.com','sam','lam','https://images.pexels.com/photos/13357691/pexels-photo-13357691.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','sam','password'),(17,'2023-07-01','edward@gmail.com','Ed','ned','https://images.pexels.com/photos/14462604/pexels-photo-14462604.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','Ed','password'),(18,'2023-07-01','Jason@gmail.com','Jason','Mayson','https://images.pexels.com/photos/16494856/pexels-photo-16494856/free-photo-of-sunbeams-and-shadows-around-trees-in-forest.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load','Jayson','password'),(19,'2023-07-01','Alfred@gmail.com','Alfred','Dalfred','https://images.pexels.com/photos/15857351/pexels-photo-15857351/free-photo-of-snow-bird-art-dark.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','Al','password'),(20,'2023-07-01','Emily@gmail.com','Emily','Fanily','https://images.pexels.com/photos/11157048/pexels-photo-11157048.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','Em','password');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +62,7 @@ CREATE TABLE `client_session` (
   UNIQUE KEY `token_un` (`token`),
   KEY `client_session_FK` (`client_id`),
   CONSTRAINT `client_session_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +71,7 @@ CREATE TABLE `client_session` (
 
 LOCK TABLES `client_session` WRITE;
 /*!40000 ALTER TABLE `client_session` DISABLE KEYS */;
-INSERT INTO `client_session` VALUES (15,15,'4b1c438a25384d47a1f4b358df686f4f'),(16,16,'fd5eabbd85364fc28fd4ba0e0e68ce9e'),(17,17,'2f635bb7ef334125b245eea6838a92c1'),(18,18,'8da2535570ac4d75963388818123923e'),(19,19,'6bb61f80952a426481963a2a5da6f0d0'),(20,20,'d28b07e018ad47fe9d8a32736106524f');
+INSERT INTO `client_session` VALUES (15,15,'4b1c438a25384d47a1f4b358df686f4f'),(16,16,'fd5eabbd85364fc28fd4ba0e0e68ce9e'),(17,17,'2f635bb7ef334125b245eea6838a92c1'),(18,18,'8da2535570ac4d75963388818123923e'),(19,19,'6bb61f80952a426481963a2a5da6f0d0'),(20,20,'d28b07e018ad47fe9d8a32736106524f'),(21,15,'167692ca8a624ab1b4e1a3ee10881f69'),(22,15,'e602d31dee5d4c88abb231fd91ad6375'),(23,15,'b847df452c6d413382fbbae1e80a02d5'),(24,15,'a996e84c90f847e2900576eb048a4aef'),(25,15,'e7298aebd2b046a5bd2117f196a2015c');
 /*!40000 ALTER TABLE `client_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -101,7 +101,7 @@ CREATE TABLE `menu_item` (
 
 LOCK TABLES `menu_item` WRITE;
 /*!40000 ALTER TABLE `menu_item` DISABLE KEYS */;
-INSERT INTO `menu_item` VALUES (4,3,'Taco','https://images.pexels.com/photos/2092507/pexels-photo-2092507.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','taco',13.99),(5,3,'Pancakes','https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1600','pancakes',11.99),(6,3,'Chicken and Rice','https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&w=1600','chicken and rice',18.99),(7,3,'Egg and Spinach Salad','https://images.pexels.com/photos/842571/pexels-photo-842571.jpeg?auto=compress&cs=tinysrgb&w=1600','salad',13.99),(8,3,'Shrimp soup','https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1600','Shrimp',14.99),(9,3,'Eggs and Rice','https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=1600','egg rice',11.99),(10,3,'Pizza','https://images.pexels.com/photos/604969/pexels-photo-604969.jpeg?auto=compress&cs=tinysrgb&w=1600','oven roasted pizza',11.99),(11,4,'Edamame','https://images.pexels.com/photos/3338497/pexels-photo-3338497.jpeg?auto=compress&cs=tinysrgb&w=1600','beans',11.99),(12,4,'Steak and Potatoes','https://images.pexels.com/photos/3659862/pexels-photo-3659862.jpeg?auto=compress&cs=tinysrgb&w=1600','steak',18.99),(13,4,'Grilled Shrimp','https://images.pexels.com/photos/1998920/pexels-photo-1998920.jpeg?auto=compress&cs=tinysrgb&w=1600','seafood',18.99),(14,4,'Caprese Salad','https://images.pexels.com/photos/1998920/pexels-photo-1998920.jpeg?auto=compress&cs=tinysrgb&w=1600','tomatoe',14.99),(15,5,'Mushroom Pizza','https://images.pexels.com/photos/2762942/pexels-photo-2762942.jpeg?auto=compress&cs=tinysrgb&w=1600','pizza',17.99),(16,5,'Seared Salmon','https://images.pexels.com/photos/3655916/pexels-photo-3655916.jpeg?auto=compress&cs=tinysrgb&w=1600','salmon',16.99),(17,5,'Shrimp Pasta','https://images.pexels.com/photos/2092906/pexels-photo-2092906.jpeg?auto=compress&cs=tinysrgb&w=1600','shrimp pasta',15.99),(18,5,'Salmon Sushi','https://images.pexels.com/photos/2092906/pexels-photo-2092906.jpeg?auto=compress&cs=tinysrgb&w=1600','salmon sushi',17.99),(19,5,'Shrimp salad','https://images.pexels.com/photos/1832016/pexels-photo-1832016.jpeg?auto=compress&cs=tinysrgb&w=1600','shrimp salad',15.99),(20,5,'Charcuterie board','https://images.pexels.com/photos/1927383/pexels-photo-1927383.jpeg?auto=compress&cs=tinysrgb&w=1600','charcuterie board',15.99),(21,5,'Cheese Burger','https://images.pexels.com/photos/1025804/pexels-photo-1025804.jpeg?auto=compress&cs=tinysrgb&w=1600','cheese burger',15.99),(22,6,'Veggie Pasta','https://images.pexels.com/photos/1373915/pexels-photo-1373915.jpeg?auto=compress&cs=tinysrgb&w=1600','veggie pasta',15.99),(23,6,'Pesto Pasta','https://images.pexels.com/photos/1256875/pexels-photo-1256875.jpeg?auto=compress&cs=tinysrgb&w=1600','pesto pasta',13.99),(24,6,'Gnocci bowl','https://images.pexels.com/photos/3590401/pexels-photo-3590401.jpeg?auto=compress&cs=tinysrgb&w=1600','cnocci bowl',13.99),(25,6,'Bean Pasta','https://images.pexels.com/photos/1527603/pexels-photo-1527603.jpeg?auto=compress&cs=tinysrgb&w=1600','bean pasta',13.99),(26,6,'Sushi Platter','https://images.pexels.com/photos/3642030/pexels-photo-3642030.jpeg?auto=compress&cs=tinysrgb&w=1600','sushi platter',13.99),(28,6,'Breakfast Burrito','https://images.pexels.com/photos/2955819/pexels-photo-2955819.jpeg?auto=compress&cs=tinysrgb&w=1600','breakfast burrito',11.99),(29,6,'Steak and Eggs','https://images.pexels.com/photos/2059151/pexels-photo-2059151.jpeg?auto=compress&cs=tinysrgb&w=1600','steak and eggs',18.99),(30,7,'Burger','https://images.pexels.com/photos/2657960/pexels-photo-2657960.jpeg?auto=compress&cs=tinysrgb&w=1600','burger',15.99),(31,7,'Avocado and Eggs on Sourdough','https://images.pexels.com/photos/4109510/pexels-photo-4109510.jpeg?auto=compress&cs=tinysrgb&w=1600','toast',15.99),(32,7,'Steak and Yams','https://images.pexels.com/photos/233305/pexels-photo-233305.jpeg?auto=compress&cs=tinysrgb&w=1600','steak and yams',15.99),(33,7,'Raspberry Waffles','https://images.pexels.com/photos/378008/pexels-photo-378008.jpeg?auto=compress&cs=tinysrgb&w=1600','waffles',15.99),(34,7,'Tomatoe Salad','https://images.pexels.com/photos/378008/pexels-photo-378008.jpeg?auto=compress&cs=tinysrgb&w=1600','tomatoe salad',15.99);
+INSERT INTO `menu_item` VALUES (4,3,'Tacos','https://images.pexels.com/photos/2092507/pexels-photo-2092507.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1','taco',13.99),(5,3,'Pancakes','https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1600','pancakes',11.99),(6,3,'Chicken and Rice','https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&w=1600','chicken and rice',18.99),(7,3,'Egg and Spinach Salad','https://images.pexels.com/photos/842571/pexels-photo-842571.jpeg?auto=compress&cs=tinysrgb&w=1600','salad',13.99),(8,3,'Shrimp soup','https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1600','Shrimp',14.99),(9,3,'Eggs and Rice','https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=1600','egg rice',11.99),(10,3,'Pizza','https://images.pexels.com/photos/604969/pexels-photo-604969.jpeg?auto=compress&cs=tinysrgb&w=1600','oven roasted pizza',11.99),(11,4,'Edamame','https://images.pexels.com/photos/3338497/pexels-photo-3338497.jpeg?auto=compress&cs=tinysrgb&w=1600','beans',11.99),(12,4,'Steak and Potatoes','https://images.pexels.com/photos/3659862/pexels-photo-3659862.jpeg?auto=compress&cs=tinysrgb&w=1600','steak',18.99),(13,4,'Grilled Shrimp','https://images.pexels.com/photos/1998920/pexels-photo-1998920.jpeg?auto=compress&cs=tinysrgb&w=1600','seafood',18.99),(14,4,'Caprese Salad','https://images.pexels.com/photos/1998920/pexels-photo-1998920.jpeg?auto=compress&cs=tinysrgb&w=1600','tomatoe',14.99),(15,5,'Mushroom Pizza','https://images.pexels.com/photos/2762942/pexels-photo-2762942.jpeg?auto=compress&cs=tinysrgb&w=1600','pizza',17.99),(16,5,'Seared Salmon','https://images.pexels.com/photos/3655916/pexels-photo-3655916.jpeg?auto=compress&cs=tinysrgb&w=1600','salmon',16.99),(17,5,'Shrimp Pasta','https://images.pexels.com/photos/2092906/pexels-photo-2092906.jpeg?auto=compress&cs=tinysrgb&w=1600','shrimp pasta',15.99),(18,5,'Salmon Sushi','https://images.pexels.com/photos/2092906/pexels-photo-2092906.jpeg?auto=compress&cs=tinysrgb&w=1600','salmon sushi',17.99),(19,5,'Shrimp salad','https://images.pexels.com/photos/1832016/pexels-photo-1832016.jpeg?auto=compress&cs=tinysrgb&w=1600','shrimp salad',15.99),(20,5,'Charcuterie board','https://images.pexels.com/photos/1927383/pexels-photo-1927383.jpeg?auto=compress&cs=tinysrgb&w=1600','charcuterie board',15.99),(21,5,'Cheese Burger','https://images.pexels.com/photos/1025804/pexels-photo-1025804.jpeg?auto=compress&cs=tinysrgb&w=1600','cheese burger',15.99),(22,6,'Veggie Pasta','https://images.pexels.com/photos/1373915/pexels-photo-1373915.jpeg?auto=compress&cs=tinysrgb&w=1600','veggie pasta',15.99),(23,6,'Pesto Pasta','https://images.pexels.com/photos/1256875/pexels-photo-1256875.jpeg?auto=compress&cs=tinysrgb&w=1600','pesto pasta',13.99),(24,6,'Gnocci bowl','https://images.pexels.com/photos/3590401/pexels-photo-3590401.jpeg?auto=compress&cs=tinysrgb&w=1600','cnocci bowl',13.99),(25,6,'Bean Pasta','https://images.pexels.com/photos/1527603/pexels-photo-1527603.jpeg?auto=compress&cs=tinysrgb&w=1600','bean pasta',13.99),(26,6,'Sushi Platter','https://images.pexels.com/photos/3642030/pexels-photo-3642030.jpeg?auto=compress&cs=tinysrgb&w=1600','sushi platter',13.99),(28,6,'Breakfast Burrito','https://images.pexels.com/photos/2955819/pexels-photo-2955819.jpeg?auto=compress&cs=tinysrgb&w=1600','breakfast burrito',11.99),(29,6,'Steak and Eggs','https://images.pexels.com/photos/2059151/pexels-photo-2059151.jpeg?auto=compress&cs=tinysrgb&w=1600','steak and eggs',18.99),(30,7,'Burger','https://images.pexels.com/photos/2657960/pexels-photo-2657960.jpeg?auto=compress&cs=tinysrgb&w=1600','burger',15.99),(31,7,'Avocado and Eggs on Sourdough','https://images.pexels.com/photos/4109510/pexels-photo-4109510.jpeg?auto=compress&cs=tinysrgb&w=1600','toast',15.99),(32,7,'Steak and Yams','https://images.pexels.com/photos/233305/pexels-photo-233305.jpeg?auto=compress&cs=tinysrgb&w=1600','steak and yams',15.99),(33,7,'Raspberry Waffles','https://images.pexels.com/photos/378008/pexels-photo-378008.jpeg?auto=compress&cs=tinysrgb&w=1600','waffles',15.99),(34,7,'Tomatoe Salad','https://images.pexels.com/photos/378008/pexels-photo-378008.jpeg?auto=compress&cs=tinysrgb&w=1600','tomatoe salad',15.99);
 /*!40000 ALTER TABLE `menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +123,7 @@ CREATE TABLE `order` (
   KEY `order_FK_1` (`restaurant_id`),
   CONSTRAINT `order_FK` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `order_FK_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -132,6 +132,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
+INSERT INTO `order` VALUES (5,15,3,1,1);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,7 +152,7 @@ CREATE TABLE `order_menu_item` (
   KEY `order_menu_item_FK_1` (`menu_item_id`),
   CONSTRAINT `order_menu_item_FK` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `order_menu_item_FK_1` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,6 +161,7 @@ CREATE TABLE `order_menu_item` (
 
 LOCK TABLES `order_menu_item` WRITE;
 /*!40000 ALTER TABLE `order_menu_item` DISABLE KEYS */;
+INSERT INTO `order_menu_item` VALUES (14,5,4),(15,5,5),(16,5,6);
 /*!40000 ALTER TABLE `order_menu_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,7 +186,7 @@ CREATE TABLE `restaurant` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_un` (`email`),
   UNIQUE KEY `name_un` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +214,7 @@ CREATE TABLE `restaurant_session` (
   UNIQUE KEY `token_un` (`token`),
   KEY `restaurant_session_FK` (`restaurant_id`),
   CONSTRAINT `restaurant_session_FK` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,7 +223,7 @@ CREATE TABLE `restaurant_session` (
 
 LOCK TABLES `restaurant_session` WRITE;
 /*!40000 ALTER TABLE `restaurant_session` DISABLE KEYS */;
-INSERT INTO `restaurant_session` VALUES (12,3,'7dbd19cd380849488e6b227ccbc55c4e'),(13,4,'b12d5a6cb3ea483f9a9ac30ed11646da'),(14,5,'ec041f87b3354987b5e35d9f1c280096'),(15,6,'2b1a9001fecc4fa299c6c24af1d14975'),(16,7,'1d8c926c8d6149ee8222fb4e6ab47821');
+INSERT INTO `restaurant_session` VALUES (12,3,'7dbd19cd380849488e6b227ccbc55c4e'),(13,4,'b12d5a6cb3ea483f9a9ac30ed11646da'),(14,5,'ec041f87b3354987b5e35d9f1c280096'),(15,6,'2b1a9001fecc4fa299c6c24af1d14975'),(16,7,'1d8c926c8d6149ee8222fb4e6ab47821'),(17,3,'125cde7daa3d45a786ac14f94d104483'),(18,3,'d5653633cf1f4882a3c682348427f33c'),(19,3,'33b9d868b5b94f7a9d753a96e5722cfc'),(20,3,'47fc9d53a94749c9bf5269fef2311f85'),(21,3,'144f6f9eaa774c64bc4dbd8f1e60fa2f'),(22,3,'47f81f9f37b14b74b282dd3c21d52a49'),(23,3,'e49dc9a335a6420699cae5df301968aa');
 /*!40000 ALTER TABLE `restaurant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,7 +272,7 @@ begin
 	email=ifnull(email_input,email),first_name=ifnull(first_name_input,first_name), 
 	last_name=ifnull(last_name_input,last_name),image_url=ifnull(image_url_input,image_url),
 	username=ifnull(username_input,username),password=ifnull(password_input,password) 
-	WHERE id=(select id from client_session where token=token_input);
+	WHERE id=(select client_id from client_session where token=token_input);
 	commit;
 end ;;
 DELIMITER ;
@@ -315,7 +317,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_client`(token_input varchar(
     MODIFIES SQL DATA
 begin
 	DELETE FROM foodie.client WHERE password=password_input and id=(select client_id from client_session where token = token_input);
-	call delete_client_login(token_input);
+	DELETE FROM foodie.client_session WHERE client_id = (SELECT client_id FROM foodie.client_session where token = token_input);
 	commit;
 END ;;
 DELIMITER ;
@@ -423,7 +425,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_restaurants`()
 begin
 	SELECT convert(email using "utf8")as email,convert(name using "utf8")as name,convert(address using "utf8")as address,
 	convert(phone_number using "utf8")as phone_number,convert(bio using "utf8")as bio,convert(city using "utf8")as city,
-	convert(profile_url using "utf8")as profile_url,convert(banner_url using "utf8")as banner_url FROM foodie.restaurant;
+	convert(profile_url using "utf8")as profile_url,convert(banner_url using "utf8")as banner_url,id as restaurant_id
+	FROM foodie.restaurant;
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -443,7 +446,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client`(client_id_input int(10))
 begin
 	SELECT convert(created_at using "utf8")as created_at,convert(email using "utf8")as email,convert(first_name using "utf8")as first_name,
-	convert(last_name using "utf8")as last_name,convert(image_url using "utf8")as image_url,convert(username using "utf8")as username
+	convert(last_name using "utf8")as last_name,convert(image_url using "utf8")as image_url,convert(username using "utf8")as username,id
 	FROM foodie.client where id =client_id_input;
 END ;;
 DELIMITER ;
@@ -463,33 +466,34 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client_order`(token_input varchar(100),is_complete_input bool,is_confirmed_input bool)
 begin
-	if is_complete_input = null and is_confirmed_input = null then
-		select convert(o.is_complete using "utf8")as is_complete,convert(o.is_confirmed using "utf8")as is_confirmed,
-		convert(mi.name using "utf8")as name,convert(mi.price using "utf8")as price,
-		convert(omi.menu_item_id using "utf8")as menu_item,convert(omi.order_id using "utf8")as order_id
-		from foodie.order_menu_item omi inner join foodie.`order`o on o.id=order_id 
-		inner join menu_item mi on mi.id=omi.menu_item_id where o.client_id=(select client_id from client_session where token=token_input);
-	elseif is_complete_input = true then
+
+	if is_complete_input is not null and is_confirmed_input is not null then
 		select convert(o.is_complete using "utf8")as is_complete,convert(o.is_confirmed using "utf8")as is_confirmed,
 		convert(mi.name using "utf8")as name,convert(mi.price using "utf8")as price,
 		convert(omi.menu_item_id using "utf8")as menu_item,convert(omi.order_id using "utf8")as order_id
 		from foodie.order_menu_item omi inner join foodie.`order`o on o.id=order_id 
 		inner join menu_item mi on mi.id=omi.menu_item_id where o.client_id=(select client_id from client_session where token=token_input)
 		and o.is_complete = is_complete_input;
-	elseif is_confirmed_input = true then
-		select convert(o.is_complete using "utf8")as is_complete,convert(o.is_confirmed using "utf8")as is_confirmed,
-		convert(mi.name using "utf8")as name,convert(mi.price using "utf8")as price,
-		convert(omi.menu_item_id using "utf8")as menu_item,convert(omi.order_id using "utf8")as order_id
-		from foodie.order_menu_item omi inner join foodie.`order`o on o.id=order_id 
-		inner join menu_item mi on mi.id=omi.menu_item_id where o.client_id=(select client_id from client_session where token=token_input)
-		and o.is_confirmed = is_confirmed_input;
-	elseif is_complete_input = true and is_confirmed_input = true then
+	elseif is_confirmed_input is not null and is_complete_input is null then
 		select convert(o.is_complete using "utf8")as is_complete,convert(o.is_confirmed using "utf8")as is_confirmed,
 		convert(mi.name using "utf8")as name,convert(mi.price using "utf8")as price,
 		convert(omi.menu_item_id using "utf8")as menu_item,convert(omi.order_id using "utf8")as order_id
 		from foodie.order_menu_item omi inner join foodie.`order`o on o.id=order_id 
 		inner join menu_item mi on mi.id=omi.menu_item_id where o.client_id=(select client_id from client_session where token=token_input)
 		and o.is_confirmed = is_confirmed_input and o.is_complete = is_complete_input;
+	elseif is_complete_input is not null and is_confirmed_input is null then
+		select convert(o.is_complete using "utf8")as is_complete,convert(o.is_confirmed using "utf8")as is_confirmed,
+		convert(mi.name using "utf8")as name,convert(mi.price using "utf8")as price,
+		convert(omi.menu_item_id using "utf8")as menu_item,convert(omi.order_id using "utf8")as order_id
+		from foodie.order_menu_item omi inner join foodie.`order`o on o.id=order_id 
+		inner join menu_item mi on mi.id=omi.menu_item_id where o.client_id=(select client_id from client_session where token=token_input)
+		and o.is_complete = is_complete_input and o.is_confirmed = is_confirmed_input;
+	else
+		select convert(o.is_complete using "utf8")as is_complete,convert(o.is_confirmed using "utf8")as is_confirmed,
+		convert(mi.name using "utf8")as name,convert(mi.price using "utf8")as price,
+		convert(omi.menu_item_id using "utf8")as menu_item,convert(omi.order_id using "utf8")as order_id
+		from foodie.order_menu_item omi inner join foodie.`order`o on o.id=order_id 
+		inner join menu_item mi on mi.id=omi.menu_item_id where o.client_id=(select client_id from client_session where token=token_input);
 	end if;
 end ;;
 DELIMITER ;
@@ -533,7 +537,7 @@ begin
 	SELECT convert(email using "utf8")as email,convert(name using "utf8")as name,
 	convert(address using "utf8")as address,convert(phone_number using "utf8")as phone_number,
 	convert(bio using "utf8")as bio,convert(city using "utf8")as city,
-	convert(profile_url using "utf8")as profile_url,convert(banner_url using "utf8")as banner_url
+	convert(profile_url using "utf8")as profile_url,convert(banner_url using "utf8")as banner_url,id as restaurant_id
 	FROM foodie.restaurant
 	where id = restaurant_id_input;
 END ;;
@@ -743,7 +747,7 @@ begin
 	address=ifnull(address_input,address), phone_number=ifnull(phone_number_input,phone_number),
 	bio=ifnull(bio_input,bio), city=ifnull(city_input,city), 
 	profile_url=ifnull(profile_url_input,profile_url),banner_url=ifnull(banner_url_input,banner_url) 
-	WHERE id=(select id from restaurant_session where token=token_input);
+	WHERE id=(select restaurant_id from restaurant_session where token=token_input);
 	commit;
 end ;;
 DELIMITER ;
@@ -784,4 +788,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-02 15:50:52
+-- Dump completed on 2023-07-04 15:06:56
